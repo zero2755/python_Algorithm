@@ -28,7 +28,7 @@ while q:
     v,s,x,y=q.popleft()
 
     if s==target_S:
-        print(graph[target_X-1][target_Y-1])
+        print(graph[target_X-1][target_Y-1]) #얘를 #1에다옮기면 정답인데 왜?
         break
         #print(x,y)
         #print("============")
@@ -40,7 +40,7 @@ while q:
             graph[nx][ny]=v
             q.append((v,s+1,nx,ny))
         
-        
+#1        
 
              
 
