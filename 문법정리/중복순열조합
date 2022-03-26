@@ -1,0 +1,21 @@
+from itertools import permutations
+from itertools import combinations
+from itertools import product
+from itertools import combinationswith_replacement
+a=[1,2,3,4]
+
+a=list(permutations(a,2))
+
+b=[1,2,3,4]
+b=list(combinations(b,2))
+
+#
+c=[1,2,3,4]
+c=list(product(c,repeat=2))
+print(c)
+
+d=[1,2,3,4]
+d=list(combinations_with_replacement(d, 2))
+#중복조합 combinations_with_replacement
+#print(a)
+
