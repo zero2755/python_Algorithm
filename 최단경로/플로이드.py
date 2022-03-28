@@ -26,9 +26,13 @@ for k in range(1,n+1):
         for j in range(1,n+1):
             graph[i][j]=min(graph[i][j],graph[i][k]+graph[k][j])
 
+ 
+
 for i in range(1,n+1):
     ztr=''
     for j in range(1,n+1):
+        if graph[i][j]==987654321:
+            graph[i][j]=0
         ztr+=str(graph[i][j])+' '
     #ztr.rstrip()
     print(ztr)
