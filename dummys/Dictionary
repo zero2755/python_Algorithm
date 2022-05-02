@@ -1,0 +1,46 @@
+
+Dictionary(HashTable)
+
+특징
+1. 순차적으로 데이터 저장X
+2. Key를 통해 Value값 얻음
+3. Mutable함
+4 Value는 중복가능하지만 key는 중복불가
+
+딕셔너리생성시 머스탓치 사용{}
+
+
+====================
+샘플
+
+dict={}
+
+dog={
+	'type':'코기',
+	'age':3,
+	'name':'아리'
+}
+
+height={'영호':180, '재영':160, '승재':176}
+
+print(dog)
+print(height)
+print(height.get('승재'))
+height['승재']=130
+print(height.get('승재'))
+
+del height['영호']
+
+print(height)
+
+for key in height:
+	print(key,'키값')
+
+print("-----------")
+
+for key,value in height.items():
+	print(key,value,'키값과 벨류')
+
+myKeys=height.keys()
+
+print(myKeys,'키값만')
