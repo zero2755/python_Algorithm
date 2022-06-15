@@ -1,0 +1,47 @@
+import sys
+import heapq
+
+input=sys.stdin.readline
+
+T=int(input())
+
+N=int(input())
+
+
+graph=[list(map(int,input().split())) for _ in range(N)]
+
+#=>2차원의 다익스트라 ? 에 bfs?
+INF=987654321
+
+
+costMap=[[INF]*N for _ in range(N)]
+costMap[0][0]=graph[0][0]
+
+
+dx=[0,0,-1,1]
+dy=[1,-1,0,0]
+#bfs하면서 조건맞으면 큐에넣기
+def dij():
+    q=[]
+    heapq.heappush(q,(graph[0][0],0,0))
+
+    while q:
+        curCost,curX,curY=heapq.heappop(q)
+        for i in range(4):
+            newX=curX+dx[i]
+            newY=curY+dy[i]
+
+            if( newX>=0 and newX<N and newY>=0 and newY<N):
+                newCost=curCost+graph[newX][newY]
+
+                if newCost < costMap[newX][newY]:
+                    costMap[newX][newY]=newCost
+                    heapq.heappush(q,(newCost,newX,newY))
+
+
+dij()
+
+#print(graph)
+
+#print(costMap)
+print(costMap[N-1][N-1])
