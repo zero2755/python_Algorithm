@@ -1,0 +1,19 @@
+import sys
+input=sys.stdin.readline
+
+N=int(input())
+
+graph=[]
+
+#testarr=input().split()
+#print(testarr) #리스트
+
+
+for _ in range(N):
+
+    graph.append(input().split())
+graph.sort(key=lambda x : (x[0]))
+graph.sort(key=lambda x : (-int(x[1]),int(x[2]),-int(x[3])))
+
+for x in graph:
+    print(x[0])
