@@ -1,0 +1,40 @@
+import sys
+input=sys.stdin.readline
+
+디버깅필요
+
+def solution(n, lost, reserve):
+    lostLen=len(lost)
+    reserveLen=len(reserve)
+    
+    
+    lost.sort()
+    reserve.sort()
+  
+    for i in range(reserveLen):
+        if reserve[i] in lost:
+            tempX=reserve[i]
+            lost.remove(tempX)
+            reserve.remove(tempX)
+             
+             
+    
+    for x in reserve:
+        if x-1 in lost:
+            lostLen-=1
+            lost.remove(x-1)
+            reserve.remove(x)
+             
+            continue
+        
+        if x+1 in lost:
+            lostLen-=1
+            lost.remove(x+1)
+            reserve.remove(x)
+             
+            continue;
+        
+
+    answer = n-lostLen
+    return answer
+    
