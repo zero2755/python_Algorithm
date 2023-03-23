@@ -1,0 +1,99 @@
+
+import sys
+from collections import deque
+
+input = sys.stdin.readline
+
+
+
+N,M = map(int,input().split())
+
+
+graph=[]
+
+#그래프입력
+for _ in range (N):
+    graph.append(list(map(int,input().split())))
+
+
+temp=[[0]*M for _ in range(N)]
+
+
+def virus(X,Y):
+
+    q = deque()
+    q.append((X,Y))
+
+    dx=[0,0,-1,1]
+    dy=[1,-1,0,0]
+
+
+    while q:
+        curX, curY=q.popleft()
+
+        #상하좌우
+        for i in range(4):
+            nowX = curX+dx[i]
+            nowY = curY+dy[i]
+
+            #경계선 안넘어갈때
+            if nowX>= 0 and nowX<N and  nowY >=0 and nowY<M:
+
+                #바이러스퍼질공간이있으면
+                if temp[nowX][nowY] == 0:
+                    temp[nowX][nowY] = 2
+                    q.append((nowX,nowY))
+
+
+
+def chkScore():
+    score=0
+    for i in range(N):
+        for j in range(M):
+            if temp[i][j]==0:
+                score+=1
+
+    return score
+
+ans = 0
+
+def dfs(cnt):
+
+    global ans
+    #탈출조건
+    if cnt==3:
+
+        #그래프지도 복제
+        for i in range(N):
+            for j in range(M):
+                temp[i][j] = graph[i][j]
+
+        #바이러스 전파
+        for i in range(N):
+            for j in range(M):
+                if temp[i][j]==2:
+                    virus(i,j)
+        #스코어갱신
+        ans = max(ans , chkScore())
+        #if ans==14:
+        #    print(temp)
+        return
+
+
+    #다음조건
+    for i in range(N):
+        for j in range(M):
+            if graph[i][j]==0:
+
+                #cnt를더하고 넘겨주고 다시 빼도됨
+                graph[i][j] = 1
+                dfs(cnt+1)
+                graph[i][j] = 0
+
+
+
+
+dfs(0)
+
+print(ans)
+
