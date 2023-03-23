@@ -1,0 +1,104 @@
+
+
+
+
+N = int(input())
+
+numArr=list(map(int,input().split()))
+
+add,minus,mul,div=map(int,input().split())
+
+
+ansMin = 9876543211
+
+ansMax = -9876543211
+
+chkArr=[]
+scoreArr=[]
+
+def dfs(i,score):
+    #현재값에서 다음
+
+    global ansMin
+    global ansMax
+    global add
+    global minus
+    global mul
+    global div
+
+
+    #탈출조건
+    if i == N:
+
+        ansMin = min(ansMin , score)
+        ansMax = max(ansMax , score)
+        # if score==-24:
+        #     print(chkArr)
+        #
+        # if score==48:
+        #     print("z")
+        #     print(chkArr)
+        #     print(scoreArr)
+        #     print("z")
+
+
+    #다음조건
+    #연산이 남아있으면, 점수에 해당연산을 더해 다음dfs로 넘김
+    if add > 0:
+        add-=1
+        chkArr.append('add')
+        scoreArr.append(score+numArr[i])
+        dfs(i+1,score+numArr[i])
+        chkArr.pop()
+        scoreArr.pop()
+        add += 1
+    if minus > 0:
+        minus-=1
+        chkArr.append('minus')
+        scoreArr.append(score - numArr[i])
+        dfs(i+1,score-numArr[i])
+        chkArr.pop()
+        scoreArr.pop()
+        minus += 1
+    if mul > 0:
+        mul-=1
+        chkArr.append('mul')
+        scoreArr.append(score * numArr[i])
+        dfs(i+1,score*numArr[i])
+        chkArr.pop()
+        scoreArr.pop()
+        mul += 1
+
+    if div > 0:
+        div-=1
+        chkArr.append('div')
+        if score < 0:
+            score*=-1
+            score = score // numArr[i]
+            score *= -1
+            scoreArr.append(score)
+            dfs(i+1,score)
+            chkArr.pop()
+            scoreArr.pop()
+
+
+        else:
+            scoreArr.append(score // numArr[i])
+            dfs(i+1,score//numArr[i])
+            chkArr.pop()
+            scoreArr.pop()
+
+        div += 1
+
+
+
+dfs(1,numArr[0])
+
+print(ansMax)
+print(ansMin,end='')
+
+
+
+
+
+
