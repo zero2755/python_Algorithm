@@ -1,0 +1,52 @@
+from collections import deque
+
+INF=987654321
+
+N, M, K, X = map(int,input().split())
+ 
+#인접리스트 틀만들기
+graph = [[] for _ in range (N+1)]
+
+
+#인접리스트 입력
+for _ in range(M):
+    a , b = map(int, input().split())
+    graph[a].append(b)
+
+distance = [INF]*(N+1)
+
+#자기자신은0
+distance[X]=0
+
+
+#시작점에서 코스트 계산하며 최단거리 갱신
+def bfs(X):
+    q = deque()
+    q.append((X,0))
+    while q:
+        curX,curCost=q.popleft()
+        for i in graph[curX]:
+            if distance[i]> curCost+1:
+                distance[i] = curCost + 1
+                q.append((i,curCost+1))
+
+
+bfs(X)
+ansList=[]
+for i in range(1,N+1):
+    if distance[i]==K:
+        ansList.append(i)
+
+ansList.sort()
+
+
+if len(ansList)==0:
+    print('-1',end='')
+else:
+    for i in ansList:
+        print(i)
+
+
+
+
+ 
