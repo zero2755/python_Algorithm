@@ -1,0 +1,86 @@
+
+from collections import deque
+
+N, K = map(int,input().split())
+
+
+graph =[]
+
+for _ in range(N):
+    graph.append(list(map(int,input().split())))
+
+S,X,Y = map(int,input().split())
+
+# 탐색한번으로 들어온 1~k를 체크하고 데큐에넣고 bfs한칸씩할때마다코스트 1씩줘서 bfs끝내고 x,y,S체크하면됨
+
+searchQ=[]
+
+for i in range(N):
+    for j in range(N):
+        if graph[i][j] !=0:
+            searchQ.append((graph[i][j],i,j))
+
+searchQ.sort(reverse=True)
+#print(searchQ)
+
+#a,b,c=searchQ.pop()
+
+#print(searchQ,a,b,c)
+
+costGraph=[[0]*N for _ in range(N)]
+
+def bfs():
+    global X
+    global Y
+    global S
+    q=deque()
+    for _ in range(K):
+        a, b, c = searchQ.pop()
+        q.append((a,b,c,0)) #바이러스 종류, 행렬좌표와 코스트
+
+
+
+    while q:
+
+        dx=[0,0,-1,1]
+        dy=[1,-1,0,0]
+
+        virus,nx,ny,cost=q.popleft()
+
+
+        for i in range(4):
+            curX=nx+dx[i]
+            curY=ny+dy[i]
+            #print("!!!")
+
+            if curX>=0 and curX<N and curY>=0 and curY<N:
+                if graph[curX][curY] == 0:
+                    graph[curX][curY] = virus #바이러스넣음
+                    q.append((virus,curX, curY,cost+1))
+
+                    costGraph[curX][curY]=cost+1
+                    #print("@@@@@@@")
+
+                    if curX==X-1 and curY==Y-1:
+                        #print("########")
+                        #curx, curY에 바이러스가 도착햇을때 S초안에 들어온거라면 출력
+                        if cost+1<=S:
+                            print(virus)
+                        else:
+                            print(0)
+
+
+
+
+
+
+bfs()
+
+
+
+
+
+
+
+
+
