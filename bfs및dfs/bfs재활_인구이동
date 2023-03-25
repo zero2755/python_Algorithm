@@ -1,0 +1,101 @@
+
+
+from collections import deque
+
+INF=987654321
+
+
+N, L, R = map(int,input().split())
+
+
+graph = []
+
+for _ in range(N):
+    graph.append(list(map(int,input().split())))
+
+
+
+
+unionCnt = 0
+
+isUnion=1
+
+def bfs(X,Y):
+    global isUnion
+    dx=[0,0,-1,1]
+    dy=[1,-1,0,0]
+
+    q=deque()
+    q.append((X,Y))
+
+    #연합의 총 인원
+    unionPeopleSum=graph[X][Y]
+    #연합의 좌표
+    unionGraph = deque()
+    unionGraph.append((X, Y))
+
+    union[X][Y]=unionCnt
+
+    unionDivCnt=1
+    #유니온찾는작업, 한번이라도 국경선풀리는지 체크
+    while q:
+        popX,popY=q.popleft()
+
+        for i in range(4):
+            curX=popX+dx[i]
+            curY=popY+dy[i]
+
+            if curX>=0 and curX<N and curY>=0 and curY<N:
+                if union[curX][curY]==INF:   #아직 연합된게없는곳이면
+
+                    peopleDiff = abs(graph[popX][popY] - graph[curX][curY])
+                    #print("@@@@@@@",peopleDiff,L,R)
+                    if L<=peopleDiff and peopleDiff<=R:
+                        #print("zzzzz")
+                        unionDivCnt+=1
+                        unionGraph.append((curX,curY))
+                        unionPeopleSum+=graph[curX][curY] #연합인원더하기
+                        union[curX][curY]=unionCnt #연합에속하게
+                        q.append((curX,curY))
+                        isUnion=1 #연합이동이 일어남
+
+    if isUnion==1:
+        #갯수로나눔
+        DivResult=unionPeopleSum//unionDivCnt
+        #print(unionGraph)
+
+        #인구이동실행
+        for i in unionGraph:
+            graph[i[0]][i[1]]=DivResult
+
+
+union=[[INF]*N for _ in range(N)]
+#유니온초기화도필요함
+
+#인구 합치는함수
+
+
+
+ans=0
+while isUnion==1:
+
+    isUnion=0
+    union = [[INF] * N for _ in range(N)] #유니온초기화
+
+
+    for i in range(N):
+        for j in range(N):
+            if union[i][j] == INF:
+                unionCnt+=1
+                bfs(i,j)
+    if isUnion==0:
+        print(ans)
+    else:ans+=1
+
+
+
+
+
+
+
+
