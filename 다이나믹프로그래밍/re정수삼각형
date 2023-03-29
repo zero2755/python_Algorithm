@@ -1,0 +1,42 @@
+INF=987654321
+
+N = int(input())
+
+
+
+#값과 경로체크용
+#graph2=[[INF,INF] for _ in range(3)]
+
+graph=[]
+d=[]
+graph2=[]
+for _ in range(N):
+    listA=list(map(int,input().split()))
+    graph.append(listA)
+    d.append(listA)
+    graph2.append(listA)
+ans=-9876654321
+for i in graph:
+     for x in i:
+         ans=max(ans,x)
+
+d[0][0]=graph[0][0]
+
+for i in range(len(graph)):
+    if i==0: continue
+    for j in range(len(graph[i])):
+        #처음,끝,중간 고려
+        if j==0:d[i][j]=d[i-1][j]+graph[i][j]
+        elif j==len(graph[i])-1:
+            d[i][j]=d[i-1][j-1]+graph[i][j]
+        else:
+            d[i][j]=max(d[i-1][j-1],d[i-1][j])+graph[i][j]
+
+for i in graph:
+     for x in i:
+         ans=max(ans,x)
+print(ans)
+
+
+
+
