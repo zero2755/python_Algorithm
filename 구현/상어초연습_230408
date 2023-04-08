@@ -1,0 +1,121 @@
+
+N = int(input())
+
+# N+1 by N+1 행렬선언
+
+#INF=987
+
+graph = [[0]*(N+1) for _ in range(N+1)]
+
+#print(graph)
+
+
+# 각학생들의 선호를 받을 인접리스트 생성후 값할당
+
+#선호학생 넣을 그래프
+# prefer = [[] for _ in range(N*N+1)]
+# #print(prefer)
+#
+# for _ in range(N*N):
+#       A,B,C,D,E = map(int,input().split())
+#       prefer[A].append(B)
+#       prefer[A].append(C)
+#       prefer[A].append(D)
+#       prefer[A].append(E)
+
+prefer = []
+
+for i in range(N*N):
+      prefer.append(list(map(int, input().split())))
+
+print(graph)
+
+#print(prefer)
+
+
+def getChk():
+      dx = [-1,1,0,0]
+      dy = [0,0,-1,1]
+
+
+      for ele in prefer:
+            # if ele[0]== 9:
+            #       break
+            maxPreferCnt=-1
+            maxBlankCnt=-1
+            aloX=0
+            aloY=0
+            for i in range(1,N+1):
+                  for j in range(1,N+1):
+                        if graph[i][j]!=0:      #자리에 임자가있으면 걍 넘어가야지
+                              continue
+                        preferCnt = 0 #각 자리마다 체크
+                        blankCnt = 0
+                        #상하좌우 체크시 좋아하는학생, 빈칸체크
+                        for index in range(4):
+
+                              nx = i+dx[index]
+                              ny = j+dy[index]
+                              if nx>=1 and nx<=N and ny>=1 and ny<=N:
+                                    for eleStudent in range(1,5):
+                                          #print(eleStudent,"z")
+                                          if ele[eleStudent] == graph[nx][ny]:
+                                                preferCnt+=1
+                                    if graph[nx][ny]==0:
+                                          blankCnt+=1
+
+                        #상하좌우 체크후
+                        if maxPreferCnt<preferCnt:
+                              aloX=i      #임시로 학생 위치지정
+                              aloY=j
+                              maxPreferCnt=preferCnt
+                              maxBlankCnt = blankCnt
+                        elif maxPreferCnt==preferCnt and maxBlankCnt < blankCnt:
+                              maxBlankCnt =blankCnt
+                              aloX = i
+                              aloY = j
+
+            graph[aloX][aloY] = ele[0]  # 학생배치
+
+getChk()
+#print(graph)
+
+print(graph[1])
+
+def getScore():
+      dx = [-1,1,0,0]
+      dy = [0,0,-1,1]
+      score=0
+
+      for i in range(1,N):
+            for j in range(1,N):
+
+
+                  for x in prefer:
+
+
+
+                        # 상하좌우 체크시 좋아하는학생, 빈칸체크
+                        for index in range(4):
+
+                              nx = i + dx[index]
+                              ny = j + dy[index]
+                              if nx >= 1 and nx <= N and ny >= 1 and ny <= N:
+                                    for i in range(1, 5):
+                                          # print(eleStudent,"z")
+                                          if x[i] == graph[nx][ny]:
+                                                print(x[i],graph[nx][ny],i,j)
+                                                score += 1
+
+      return score
+print(graph)
+print(getScore())
+
+
+
+
+
+
+
+
+
