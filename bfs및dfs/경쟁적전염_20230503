@@ -1,0 +1,58 @@
+from collections import deque
+
+#굳이 디버깅할필욘없음
+
+
+N,K = map(int,input().split())
+
+graph=[]
+
+for _ in range(N):
+    graph.append(list(map(int,input().split())))
+
+#print(graph)
+
+
+S,X,Y= map(int,input().split())
+
+numQue=deque()
+
+
+for i in range(1,N+1):
+    for j in range(0,N):
+        for k in range(0,N):
+            if i==graph[j][k]:
+                numQue.append((j,k))
+
+#코스트맵
+costMap=[[0]*N for _ in range(N)]
+
+
+def bfs():
+    dx=[0,0,-1,1]
+    dy=[1,-1,0,0]
+
+    while numQue:
+        curX, curY = numQue.popleft()
+        for i in range(4):
+            nx=curX+dx[i]
+            ny=curY+dy[i]
+            if nx>=0 and nx<N and ny>=0 and ny<N:
+                if graph[nx][ny]==0:
+                    graph[nx][ny]=graph[curX][curY]
+                    numQue.append((nx,ny))
+                    costMap[nx][ny]=costMap[curX][curY]+1
+
+bfs()
+#print(graph)
+#print(costMap)
+#print('x,y',X-1,Y-1)
+
+if costMap[X-1][Y-1]>S and costMap[X-1][Y-1]!=0:
+    print(0)
+else:
+    print(graph[X - 1][Y - 1])
+
+
+
+
