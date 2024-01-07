@@ -1,0 +1,34 @@
+from collections import deque
+
+N,M=map(int,input().split())
+
+findList=deque(map(int,input().split()))
+q=deque()
+for i in range(1,N+1):
+    q.append(i)
+ans=0
+
+while len(findList)!=0:
+
+
+    mid=len(q)//2
+
+    findValue=findList[0]
+    findIdx=q.index(findValue)
+    #print('찾는값',findValue,'인덱스',findIdx)
+    #print(mid,"<- 길이의 중앙값")
+
+    # 뽑기
+    if findIdx==0:
+        q.popleft()
+        findList.popleft()
+    elif findIdx<=mid: #왼쪽으로돌림
+        q.append(q.popleft())
+        ans+=1
+    else: #오른쪽으로돌림
+        q.insert(0,q.pop())
+        ans += 1
+
+
+
+print(ans)
