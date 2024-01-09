@@ -1,0 +1,66 @@
+import heapq
+
+
+
+
+ans=0
+
+
+
+N = int(input())
+
+M= int(input())
+
+INF=987654321
+
+costList=[INF]*(N+1)
+
+isVisit=[False]*(N+1)
+
+#print(isVisit)
+
+#print(costList)
+
+edges=[[] for _ in range(N+1)]
+
+
+for i in range(M):
+    a,b=map(int,input().split())
+    c=1
+    edges[a].append([b,c])
+    edges[b].append([a,c])
+
+#print(edges)
+
+def dif(start):
+
+    q=[]
+    heapq.heappush(q,(0,start))
+    costList[start]=0
+
+
+    while q:
+        curCost,curNode=heapq.heappop(q)
+        #print(curCost,curNode)
+        if isVisit[curNode]==False:
+            isVisit[curNode]=True
+            for x in edges[curNode]:
+                #print("엣지진입",curNode)
+                addCost=x[1]
+                addNode=x[0]
+                if curCost+addCost<costList[addNode]:
+                    costList[addNode]=curCost+addCost
+                    heapq.heappush(q,(costList[addNode],addNode))
+                    #print(curCost,curNode,addCost,addNode)
+                    #print(costList)
+
+
+
+
+dif(1)
+
+for i in range(1,N+1):
+    if costList[i]!=INF:
+        ans+=1
+
+print(ans-1)
