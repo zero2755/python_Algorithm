@@ -1,0 +1,44 @@
+from collections import deque
+
+T=int(input())
+
+def bfs(x,y):
+    q=deque()
+
+
+    q.append((x,y))
+    dx=[0,0,-1,1]
+    dy=[1,-1,0,0]
+    while q:
+        curX,curY=q.popleft()
+        for i in range(4):
+            nx=curX+dx[i]
+            ny=curY+dy[i]
+            if nx>=0 and nx<N and ny>=0 and ny<M:
+
+                if graph[nx][ny]==1:
+                    graph[nx][ny]=3
+                    q.append((nx,ny))
+
+
+
+for Z1 in range(T):
+    answer=0
+    M,N,K= map(int,input().split())
+
+
+    graph=[[0]*M for _ in range(N)]
+
+    for Z2 in range(K):
+        x,y=map(int,input().split())
+
+        graph[y][x]=1
+
+
+    for i in range(N):
+        for j in range(M):
+            if graph[i][j]==1:
+                bfs(i,j)
+                answer+=1
+
+    print(answer)
