@@ -1,0 +1,56 @@
+import heapq
+
+N,M,X=map(int,input().split())
+
+fTList=[0]*(N+1) #각지에서 X로
+tFList=[0]*(N+1) #X에서 각지로
+
+
+graph=[[] for _ in range(N+1)]
+
+for _ in range(M):
+    fro,to,cost=map(int,input().split())
+    graph[fro].append([to,cost])
+
+
+
+cost=[987654321]*(N+1)
+isVisit=[False]*(N+1)
+
+def dij(start,toggle,info):
+    cost = [987654321] * (N + 1)
+    isVisit = [False] * (N + 1)
+    q=[]
+
+    heapq.heappush(q,(0,start))
+    cost[start]=0
+    while q:
+        x=heapq.heappop(q)
+        curNode=x[1]
+        curCost=x[0]
+        if isVisit[curNode]==False:
+            isVisit[curNode]=True
+            for node in graph[curNode]:
+                if node[1]+curCost<cost[node[0]]:
+                    cost[node[0]]=node[1]+curCost
+                    heapq.heappush(q,(cost[node[0]],node[0]))
+    if toggle==True:
+        return cost[X]
+    else:
+        return cost[info]
+
+
+for i in range(1,N+1):
+    fTList[i]=dij(i,True,i)
+    tFList[i] =dij(X, False,i)
+
+
+
+ans=-1
+for i in range(1,N+1):
+    temp=fTList[i]+tFList[i]
+    ans=max(ans,temp)
+
+print(ans)
+
+
