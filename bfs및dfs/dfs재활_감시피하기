@@ -1,127 +1,79 @@
-N = int(input())
+
+#내코드가 더깔끔한듯
+N=int(input())
 
 graph=[]
 
 for _ in range(N):
     graph.append(list(map(str,input().split())))
 
+temp=[[0]*N for _ in range(N)]
 
-temp = [['x']*N for _ in range(N)]
+teacherLoc=[]
 
-#print(graph)
-#print(temp)
+for i in range(N):
+    for j in range(N):
+        if graph[i][j]=='T':
+            teacherLoc.append([i,j])
 
-isOk=0
-
-def chkFn(X,Y):
-    global isOk
-
-    #상
-    curX=X
-    curY=Y
-
-    #print("#######")
-    #print(X,Y)
-    #print("#######")
-
-    while curX > 0:
-        curX -= 1
-        if temp[curX][curY] == 'S':
-            isOk = 0
-            return
-
-        if  temp[curX][curY] == 'O':
-            break
-
-    # 하
-    curX = X
-    curY = Y
-
-    while curX <N-1 :
-        curX += 1
-        if temp[curX][curY] == 'S':
-            isOk = 0
-            return
-
-        if temp[curX][curY] == 'O':
-            break
-
-    #좌
-    curX=X
-    curY=Y
-
-    while curY > 0:
-        curY -= 1
-        if temp[curX][curY] == 'S':
-            isOk = 0
-            return
-
-        if  temp[curX][curY] == 'O':
-            break
-
-    #우
-    curX=X
-    curY=Y
-
-    while curY < N-1:
-        curY += 1
-        if temp[curX][curY] == 'S':
-            isOk = 0
-            return
-
-        if temp[curX][curY] == 'O':
-            break
-    #print("----------------")
-    # for i in range(N):
-    #
-    #     print(temp[i])
-    # #print("----------------")
-
-    #print("성공")
-    isOk=1 #다살아남으면 1
-    #무조건 뚫을수잇는게아니라 벽이나 선생이면 리턴
-
-
-
-
-
-def dfs(cnt):
-    global isOk
-
-    if isOk == 1: return #이전에 한번 성공했으면 볼필요없음
-
-    if cnt==3:
-        for i in range(N):
-            for j in range(N):
-                temp[i][j]=graph[i][j]
-
-        for i in range(N):
-            for j in range(N):
-                temp[i][j]=graph[i][j]
-                if temp[i][j]=='T':
-                    chkFn(i,j)
-                    if isOk==0:
-                        #선생 한명이라도 실패하면 더 볼필요없음
-                        return
-
-        if isOk==1: #모든선생들에 대해 다살아남음
-            print("YES")
-
-        return
-
+def isTrue():
+    dx=[0,0,-1,1]
+    dy=[1,-1,0,0]
 
     for i in range(N):
         for j in range(N):
+            temp[i][j]=graph[i][j]
 
-            if graph[i][j] == 'X':
-                cnt += 1
-                graph[i][j] = 'O'
-                dfs(cnt)
+
+
+    #선생마다
+    for curTeacher in teacherLoc:
+        #각방향마다, 범위 벗어난다면 break
+        for i in range(4):
+            for multiple in range(1,6):
+                nowX = curTeacher[0] + dx[i] * multiple
+                nowY = curTeacher[1] + dy[i] * multiple
+                if nowX>=0 and nowX<N and nowY>=0 and nowY<N:
+                    if temp[nowX][nowY]=='O':
+                        break
+                    if temp[nowX][nowY]=='S': #학생이면 실패return
+                        a=3
+                        return False
+                else:
+                    break
+
+    return True
+
+
+canSolve=False
+
+def dfs(cnt):
+
+    global canSolve
+
+    #탈출조건
+    if cnt==3:
+
+        toggle=isTrue()
+        if toggle==True:
+            canSolve=True
+        return
+
+
+    #다음조건
+    for i in range(N):
+        for j in range(N):
+            if graph[i][j]=='X' and canSolve!=True:
+                #print(canSolve)
+                graph[i][j]='O'
+                dfs(cnt+1)
                 graph[i][j] = 'X'
-                cnt -= 1
-
 
 
 dfs(0)
-if isOk==0:
-    print("NO")
+
+if canSolve==True:
+    print('YES')
+else:
+    print('NO')
+
