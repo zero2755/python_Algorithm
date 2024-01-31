@@ -1,0 +1,31 @@
+
+def lot(key): #반시계
+
+    n=len(key)
+
+    newKey=[[0]*n for _ in range(n)]
+
+    print(key)
+    for i in range(n):
+        for j in range(n):
+            newKey[i][j]=key[j][n-i-1]
+
+    print(newKey)
+
+    return newKey
+
+
+def lot2(key): #시계회전
+
+    n=len(key)
+
+    newKey=[[0]*n for _ in range(n)]
+
+    print(key)
+    for i in range(n):
+        for j in range(n):
+            newKey[i][j]=key[n-j-1][i]
+
+    print(newKey)
+
+    return newKey
