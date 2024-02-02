@@ -1,0 +1,92 @@
+ 
+
+
+
+def lot2(key,n,m): #시계회전
+
+
+
+    newKey=[[0]*m for _ in range(n)]
+
+
+    for i in range(n):
+        for j in range(m):
+            newKey[i][j]=key[m-j-1][i]
+
+
+
+
+
+    return newKey
+
+
+def multipleLock(lock,n):
+    newLock=[[0]*3*n for _ in range(n*3)]
+
+    for i in range(n,2*n):
+        for j in range(n,2*n):
+            newLock[i][j]=lock[i-n][j-n]
+
+
+
+    return newLock
+
+def makeMap(key,lock,n,keyRow,keyCol):
+    newKey=key
+    for _ in range(4):
+        newKey=lot2(newKey,keyRow,keyCol)
+
+
+        for i in range(2*n):
+            for j in range(2*n):
+                newLock = multipleLock(lock, n)
+                endFlag=False
+                for keyI in range(keyRow):
+                    for keyJ in range(keyCol):
+                        newLock[i+keyI][j+keyJ]+=newKey[keyI][keyJ]
+
+                for i2 in range(n,2*n):
+                    for j2 in range(n,2*n):
+                        if newLock[i2][j2]!=1:
+                            endFlag=True
+                            newLockLen=len(newLock)
+                            newKeyLen = len(newKey)
+                            # print("################",i2,j2)
+                            #
+                            # for x in range(newLockLen):
+                            #     print(newLock[x])
+                            # for x in range(newKeyLen):
+                            #     print(newKey[x])
+                            # print("################")
+
+
+
+
+
+                if endFlag==False:
+                    return True
+
+
+
+        return False
+
+
+
+
+def solution(key, lock):
+    lockLen = len(lock)
+
+    multipleLock(lock,lockLen)
+
+
+
+    keyRow=len(key)
+    keyCol=0
+    for _ in key[0]:
+        keyCol+=1
+
+
+    answer=makeMap(key, lock, lockLen, keyRow, keyCol)
+
+
+    return answer
