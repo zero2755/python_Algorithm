@@ -1,0 +1,190 @@
+import copy
+
+N = int(input())
+
+
+
+graph=[]
+
+for _ in range(N):
+    graph.append(list(map(int,input().split())))
+
+
+dx=[0,-1,0,1] #좌상우하
+dy=[-1,0,1,0]
+
+ans=-987654321
+
+def chkAns(inGraph):
+    global ans
+    for i in range(N):
+        for j in range(N):
+            ans=max(ans,inGraph[i][j])
+
+
+
+#dir 0 1 2 3 좌상우하
+
+def moveGraph(nowGraph,dir):
+    # 좌측
+    if dir == 0:
+        for line in range(N):
+            idx = 0
+
+            for curSor in range(N):
+
+                if idx == curSor:
+
+                    continue
+
+                elif nowGraph[line][curSor] == 0:  # 0이 이동할경우
+                    continue
+
+                elif nowGraph[line][curSor] == nowGraph[line][idx]:  # 같은숫자로이동경우
+
+                    nowGraph[line][idx] = nowGraph[line][curSor] * 2
+                    nowGraph[line][curSor] = 0
+                    idx += 1
+
+                elif nowGraph[line][idx] == 0:  # 도착지가0인경우
+
+                    nowGraph[line][idx] = nowGraph[line][curSor]
+                    nowGraph[line][curSor] = 0
+
+                else:  # 다른숫자일경우
+
+                    idx += 1
+
+                    nowGraph[line][idx] = nowGraph[line][curSor]
+                    if idx != curSor:
+                        nowGraph[line][curSor] = 0
+
+    # 우측
+    if dir == 1:
+        for line in range(N):
+            idx = N - 1
+            for curSor in range(N - 1, -1, -1):
+
+
+                if idx == curSor:
+
+                    continue
+
+                elif nowGraph[line][curSor] == 0:  # 0이 이동할경우
+                    continue
+
+                elif nowGraph[line][curSor] == nowGraph[line][idx]:  # 같은숫자로이동경우
+
+                    nowGraph[line][idx] = nowGraph[line][curSor] * 2
+                    nowGraph[line][curSor] = 0
+                    idx -= 1
+
+                elif nowGraph[line][idx] == 0:  # 도착지가0인경우
+
+                    nowGraph[line][idx] = nowGraph[line][curSor]
+                    nowGraph[line][curSor] = 0
+
+                else:  # 다른숫자일경우
+
+                    idx -= 1
+
+                    nowGraph[line][idx] = nowGraph[line][curSor]
+                    if idx != curSor:
+                        nowGraph[line][curSor] = 0
+
+    # 하
+    if dir == 2:
+        for line in range(N):
+            idx = N - 1
+            for curSor in range(N - 1, -1, -1):
+
+
+                if idx == curSor:
+
+                    continue
+
+                elif nowGraph[curSor][line] == 0:  # 0이 이동할경우
+                    continue
+
+                elif nowGraph[curSor][line] == nowGraph[idx][line]:  # 같은숫자로이동경우
+
+                    nowGraph[idx][line] = nowGraph[curSor][line] * 2
+                    nowGraph[curSor][line] = 0
+                    idx -= 1
+
+                elif nowGraph[idx][line] == 0:  # 도착지가0인경우
+
+                    nowGraph[idx][line] = nowGraph[curSor][line]
+                    nowGraph[curSor][line] = 0
+
+                else:  # 다른숫자일경우
+
+                    idx -= 1
+
+                    nowGraph[idx][line] = nowGraph[curSor][line]
+                    if idx != curSor:
+                        nowGraph[curSor][line] = 0
+
+    # 상
+    if dir == 3:
+        for line in range(N):
+            idx = 0
+
+            for curSor in range(N):
+
+                if idx == curSor:
+
+                    continue
+
+                elif nowGraph[curSor][line] == 0:  # 0이 이동할경우
+                    continue
+
+                elif nowGraph[curSor][line] == nowGraph[idx][line]:  # 같은숫자로이동경우
+
+                    nowGraph[idx][line] = nowGraph[curSor][line] * 2
+                    nowGraph[curSor][line] = 0
+                    idx += 1
+
+                elif nowGraph[idx][line] == 0:  # 도착지가0인경우
+
+                    nowGraph[idx][line] = nowGraph[curSor][line]
+                    nowGraph[curSor][line] = 0
+
+                else:  # 다른숫자일경우
+
+                    idx += 1
+
+                    nowGraph[idx][line] = nowGraph[curSor][line]
+                    if idx != curSor:
+                        nowGraph[curSor][line] = 0
+
+
+    return nowGraph
+
+
+def dfs(cnt,nowGraph):
+    if cnt==5:
+        chkAns(nowGraph)
+        return
+
+
+    for i in range(4):
+        newReturnGraph = []
+        newSendGraph = copy.deepcopy(nowGraph)
+        newReturnGraph=moveGraph(newSendGraph,i)
+        # if i==1:
+        #     print(newSendGraph)
+        #     print(cnt,"<+cnt")
+        #     print(newReturnGraph)
+        dfs(cnt+1,newReturnGraph)
+
+    # newReturnGraph = moveGraph(newSendGraph, 3)
+    # print(newReturnGraph)
+    # newReturnGraph=moveGraph(newReturnGraph, 0)
+    # print(newReturnGraph)
+
+
+dfs(0,graph)
+
+print(ans)
+
