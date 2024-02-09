@@ -1,0 +1,101 @@
+from collections import deque
+
+
+diceMap=[[0,2,0],[4,1,3],[0,5,0],[0,6,0]]
+
+diceValue=[0]*7
+
+def diceMove(dir):
+    if dir==1:
+
+        a=diceMap[1].pop(2)
+        diceMap[1].insert(0,a)
+        b=diceMap[1][0]
+        c=diceMap[3][1]
+        diceMap[1][0]=c
+        diceMap[3][1]=b
+
+    elif dir==2:
+        a=diceMap[1].pop(0)
+        diceMap[1].append(a)
+        b=diceMap[1][2]
+        c=diceMap[3][1]
+        diceMap[1][2]=c
+        diceMap[3][1]=b
+    elif dir==3:
+
+        a=diceMap[0][1]
+        b = diceMap[1][1]
+        c = diceMap[2][1]
+        d = diceMap[3][1]
+        diceMap[0][1]=b
+        diceMap[1][1] = c
+        diceMap[2][1] = d
+        diceMap[3][1] = a
+
+    else:
+
+        a=diceMap[0][1]
+        b = diceMap[1][1]
+        c = diceMap[2][1]
+        d = diceMap[3][1]
+        diceMap[0][1]=d
+        diceMap[1][1] = a
+        diceMap[2][1] = b
+        diceMap[3][1] = c
+
+
+
+N,M,X,Y,K=map(int,input().split())
+
+graph=[]
+
+for _ in range(N):
+    graph.append(list(map(int,input().split())))
+
+
+moveList=list(map(int,input().split()))
+
+#print(moveList)
+
+dx=[0,0,0,-1,1] #빈곳, 동서북남
+dy=[0,1,-1,0,0]
+
+
+def move(dir):
+
+    global X,Y
+    nx=X+dx[dir]
+    ny=Y+dy[dir]
+
+    if nx>=0 and nx<N and ny>=0 and ny<M:
+        X=nx
+        Y=ny
+        diceMove(dir)
+
+
+        curDiceTail=diceValue[diceMap[3][1]]
+      
+        if graph[nx][ny]==0:
+            graph[nx][ny]=diceValue[diceMap[3][1]]
+        else:
+
+            diceValue[diceMap[3][1]]=graph[nx][ny]
+            #print(curDiceTail,diceValue[diceMap[3][1]],"값체크1")
+            graph[nx][ny]=0
+            #print(curDiceTail, diceValue[diceMap[3][1]], "값체크2")
+
+        #다이스 위 출력
+        #print(diceMap[1][1],diceValue[diceMap[1][1]],diceValue[3])
+        print(diceValue[diceMap[1][1]])
+
+
+    else:
+        return
+
+
+
+for i in range(len(moveList)):
+
+    move(moveList[i])
+
