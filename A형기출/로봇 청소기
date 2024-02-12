@@ -1,0 +1,63 @@
+
+
+
+N,M=map(int,input().split())
+
+X,Y,dir=map(int,input().split())
+
+graph=[]
+
+for _ in range(N):
+    graph.append(list(map(int,input().split())))
+
+ans=0
+
+dx=[-1,0,1,0]  #북동남서
+dy=[0,1,0,-1]
+
+def findDir(xLoc,yLoc,curDir):
+    #현재 dir로부터 반시계방향으로 탐색
+    for _ in range(4):
+        curDir=(curDir+3)%4
+        #print(curDir,'dir') #반시계로 도는거확인
+        curX=xLoc+dx[curDir]
+        curY=yLoc+dy[curDir]
+        if graph[curX][curY]==0:
+            return curDir
+    return -1
+
+toggleValue=2
+
+def move():
+    global ans
+    global X,Y,dir
+    global toggleValue
+
+    while True:
+        if graph[X][Y]==0:
+            graph[X][Y]=toggleValue
+            toggleValue+=1
+            ans+=1
+
+
+        tempDir = findDir(X, Y, dir)
+        if tempDir !=-1:
+            #청소할 빈칸이 있으면 이동
+            X+=dx[tempDir]
+            Y+=dy[tempDir]
+            dir=tempDir
+        else: #청소할 빈칸이 없으면 후진
+            newDir=(dir+2)%4 #단순히 후진을 위한 방향임
+            X += dx[newDir]
+            Y += dy[newDir]
+            if graph[X][Y]==1:
+                # for i in range(len(graph)):
+                #     print(graph[i])
+                break
+
+
+move()
+
+print(ans)
+
+
