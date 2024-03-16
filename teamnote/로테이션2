@@ -1,0 +1,3 @@
+def rotate_90(proportion):
+    new_proportion = list(reversed(list(zip(*proportion))))
+    return new_proportion
